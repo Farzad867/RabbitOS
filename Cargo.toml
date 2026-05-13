@@ -6,4 +6,8 @@ edition = "2021"
 [dependencies]
 bootloader = "0.9.23"
 
-# اگر پکیج دیگه‌ای هم قبلاً داشتی اینجا اضافه کن، ولی ساختار اصلی باید همین باشه.
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
