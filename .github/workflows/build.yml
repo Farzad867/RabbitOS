@@ -33,7 +33,7 @@ jobs:
         mkdir -p os_binary
         
         # کپی کردن فایل سیستم‌عامل به این پوشه
-        cp target/x86_64-unknown-none/debug/bootimage-rabbitos-test.bin os_binary/rabbitos.bin
+        cp target/x86_64-unknown-none/debug/bootimage-rabbitos.bin os_binary/rabbitos.bin
         
         # تنظیمات ربات گیت‌هاب برای کامیت کردن
         git config --global user.name "github-actions[bot]"
