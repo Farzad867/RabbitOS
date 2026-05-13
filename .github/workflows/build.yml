@@ -1,0 +1,45 @@
+name: Build RabbitOS
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # این خط به ربات اجازه میده فایل رو تو پروژه آپلود کنه
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Rust Nightly
+      uses: dtolnay/rust-toolchain@nightly
+      with:
+        components: rust-src, llvm-tools-preview
+        targets: x86_64-unknown-none
+
+    - name: Install bootimage
+      run: cargo install bootimage
+
+    - name: Build the OS!
+      run: cargo bootimage
+
+    - name: Commit and Push Binary
+      run: |
+        # ساخت یه پوشه برای فایل خروجی
+        mkdir -p os_binary
+        
+        # کپی کردن فایل سیستم‌عامل به این پوشه
+        cp target/x86_64-unknown-none/debug/bootimage-rabbitos-test.bin os_binary/rabbitos.bin
+        
+        # تنظیمات ربات گیت‌هاب برای کامیت کردن
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        
+        # اضافه کردن فایل باینری، کامیت و پوش کردن تو خود ریپازیتوری
+        git add os_binary/rabbitos.bin
+        git commit -m "🚀 Auto-build: Compiled OS binary added"
+        git push
