@@ -25,7 +25,7 @@ jobs:
       run: cargo install bootimage
 
     - name: Build the OS!
-      run: cargo bootimage
+      run: rustup default nightly && rustup component add rust-src llvm-tools-preview && cargo bootimage
 
     - name: Commit and Push Binary
       run: |
